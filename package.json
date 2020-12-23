@@ -3,7 +3,7 @@
   "description": "Provides an Oclif plugin to to configure @rollup/plugin-typescript for rollup-runner.",
   "version": "0.0.0",
   "author": "typhonrt",
-  "bugs": "https://github.com/typhonjs-node-bundle/plugin-typescript/issues",
+  "bugs": "https://github.com/typhonjs-node-bundle/npmbundle/issues",
   "dependencies": {
     "@rollup/plugin-typescript": "^8.0.0"
   },
