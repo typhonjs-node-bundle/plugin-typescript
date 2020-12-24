@@ -36,7 +36,7 @@ module.exports = async function(opts)
 {
    try
    {
-      process.pluginManager.add({ name: 'plugin-typescript', instance: PluginHandler });
+      global.$$pluginManager.add({ name: 'plugin-typescript', instance: PluginHandler });
 
       // TODO REMOVE
       process.stdout.write(`plugin-typescript init hook running ${opts.id}\n`);
