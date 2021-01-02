@@ -1,3 +1,5 @@
+const typescript = require('@rollup/plugin-typescript');
+
 /**
  * Handles interfacing with the plugin manager adding event bindings to pass back a configured
  * instance of `@rollup/plugin-typescript`.
@@ -5,9 +7,26 @@
 class PluginHandler
 {
    /**
-    * @returns {string}
+    * Returns the configured input plugin for `rollup-plugin-terser`
+    *
+    * @param {object} bundleData - The CLI config
+    *
+    * @param {object} currentBundle - The current bundle config
+    * @param {object} currentBundle.inputType - The type of file.
+    *
+    * @returns {object} Rollup plugin
     */
-   static test() { return 'some testing'; }
+   static getInputPlugin(bundleData = {}, currentBundle = {}) // eslint-disable-line no-unused-vars
+   {
+      if (currentBundle.inputType === 'typescript')
+      {
+         return typescript({
+            lib: ["dom", "es6", "es2017"],
+            target: "es2017",
+            typescript: require('typescript')
+         });
+      }
+   }
 
    /**
     * Wires up PluginHandler on the plugin eventbus.
@@ -20,8 +39,7 @@ class PluginHandler
     */
    static onPluginLoad(ev)
    {
-      // TODO: ADD EVENT REGISTRATION
-      // eventbus.on(`${eventPrepend}test`, PluginHandler.test, PluginHandler);
+      ev.eventbus.on('typhonjs:oclif:bundle:plugins:main:input:get', PluginHandler.getInputPlugin, PluginHandler);
    }
 }
 
@@ -36,7 +54,7 @@ module.exports = async function(opts)
 {
    try
    {
-      global.$$pluginManager.add({ name: 'plugin-typescript', instance: PluginHandler });
+      global.$$pluginManager.add({ name: '@typhonjs-node-rollup/plugin-typescript', instance: PluginHandler });
 
       // TODO REMOVE
       process.stdout.write(`plugin-typescript init hook running ${opts.id}\n`);
