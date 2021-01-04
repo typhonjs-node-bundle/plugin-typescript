@@ -1,5 +1,9 @@
 const typescript = require('@rollup/plugin-typescript');
 
+const { FileUtil }   = require('@typhonjs-node-bundle/oclif-commons');
+
+const s_SKIP_DIRS = ['deploy', 'dist', 'node_modules'];
+
 /**
  * Handles interfacing with the plugin manager adding event bindings to pass back a configured
  * instance of `@rollup/plugin-typescript`.
@@ -16,15 +20,27 @@ class PluginHandler
     *
     * @returns {object} Rollup plugin
     */
-   static getInputPlugin(bundleData = {}, currentBundle = {}) // eslint-disable-line no-unused-vars
+   static async getInputPlugin(bundleData = {}, currentBundle = {}) // eslint-disable-line no-unused-vars
    {
       if (currentBundle.inputType === 'typescript')
       {
-         return typescript({
-            lib: ["dom", "es6", "es2017"],
-            target: "es2017",
-            typescript: require('typescript')
-         });
+         const hasTscConfig = await FileUtil.hasTscConfig(global.$$bundler_origCWD, s_SKIP_DIRS);
+
+         if (hasTscConfig)
+         {
+            global.$$eventbus.trigger('log:verbose',
+             `plugin-typescript: deferring to local Typescript configuration file(s).`);
+
+            return typescript();
+         }
+         else
+         {
+            return typescript({
+               lib: ["dom", "es6", "es2020"],
+               target: "es2020",
+               typescript: require('typescript')
+            });
+         }
       }
    }
 
