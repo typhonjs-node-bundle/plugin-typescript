@@ -1,8 +1,12 @@
 const typescript = require('@rollup/plugin-typescript');
 
-const { FileUtil }   = require('@typhonjs-node-bundle/oclif-commons');
-
 const s_SKIP_DIRS = ['deploy', 'dist', 'node_modules'];
+
+const s_DEFAULT_CONFIG = {
+   lib: ["dom", "es6", "es2020"],
+   target: "es2020",
+   typescript: require('typescript')
+};
 
 /**
  * Handles interfacing with the plugin manager adding event bindings to pass back a configured
@@ -38,23 +42,40 @@ class PluginLoader
    {
       if (currentBundle.inputType === 'typescript')
       {
-         const hasTscConfig = await FileUtil.hasTscConfig(global.$$bundler_origCWD, s_SKIP_DIRS);
+         const config = await PluginLoader._loadConfig(bundleData.cliFlags);
 
-         if (hasTscConfig)
-         {
-            global.$$eventbus.trigger('log:verbose',
-               `plugin-typescript: deferring to local Typescript configuration file(s).`);
+         return typescript(config);
+      }
+   }
 
-            return typescript();
-         }
-         else
-         {
-            return typescript({
-               lib: ["dom", "es6", "es2020"],
-               target: "es2020",
-               typescript: require('typescript')
-            });
-         }
+   /**
+    * Attempt to load a local configuration file or provide the default configuration.
+    *
+    * @param {object} cliFlags - The CLI flags.
+    *
+    * @returns {object} Either the default Typescript configuration or defer to locally provided configuration files.
+    * @private
+    */
+   static async _loadConfig(cliFlags)
+   {
+      if (typeof cliFlags['ignore-local-config'] === 'boolean' && cliFlags['ignore-local-config'])
+      {
+         return s_DEFAULT_CONFIG;
+      }
+
+      const hasTSConfig = await global.$$eventbus.triggerAsync(
+       'typhonjs:oclif:system:file:util:config:typescript:has', global.$$bundler_origCWD, s_SKIP_DIRS);
+
+      if (hasTSConfig)
+      {
+         global.$$eventbus.trigger('log:verbose',
+          `${PluginLoader.pluginName}: deferring to local Typescript configuration file(s).`);
+
+         return {};
+      }
+      else
+      {
+         return s_DEFAULT_CONFIG;
       }
    }
 

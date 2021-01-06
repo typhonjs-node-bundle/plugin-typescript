@@ -6,7 +6,6 @@
   "bugs": "https://github.com/typhonjs-node-rollup/issues/issues",
   "dependencies": {
     "@rollup/plugin-typescript": "^8.0.0",
-    "@typhonjs-node-bundle/oclif-commons": "typhonjs-node-bundle/oclif-commons#main",
     "typescript": "^4.0.0"
   },
   "devDependencies": {
