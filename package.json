@@ -6,7 +6,8 @@
   "bugs": "https://github.com/typhonjs-node-rollup/issues/issues",
   "dependencies": {
     "@rollup/plugin-typescript": "^8.0.0",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "@endemolshinegroup/cosmiconfig-typescript-loader": "^3.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.26.0",

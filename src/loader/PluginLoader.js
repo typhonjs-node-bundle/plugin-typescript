@@ -1,10 +1,13 @@
-const typescript = require('@rollup/plugin-typescript');
+const typescript           = require('@rollup/plugin-typescript');
+
+const cosmiconfigTSLoader  = require('@endemolshinegroup/cosmiconfig-typescript-loader').default;
 
 const s_SKIP_DIRS = ['deploy', 'dist', 'node_modules'];
 
 const s_DEFAULT_CONFIG = {
    lib: ["dom", "es6", "es2020"],
    target: "es2020",
+   tsconfig: false,
    typescript: require('typescript')
 };
 
@@ -27,6 +30,32 @@ class PluginLoader
     * @returns {string[]}
     */
    static get rollupPlugins() { return ['@rollup/plugin-typescript']; }
+
+   /**
+    * Provides support for `cosmiconfig` config loading for `.ts` files.
+    *
+    * @param {string} moduleName - The module name to configure for `.ts` file loading.
+    *
+    * @returns {{searchPlaces: string[], loaders: {".ts": function }}}
+    */
+   static getCosmiconfigSupport(moduleName)
+   {
+      if (typeof moduleName !== 'string')
+      {
+         throw new TypeError(
+          `${PluginLoader.pluginName} - getCosmiconfigSupport - expected 'moduleName' to be a 'string'.`);
+      }
+
+      return {
+         searchPlaces: [
+            `.${moduleName}rc.ts`,
+            `${moduleName}.config.ts`
+         ],
+         loaders: {
+            '.ts': cosmiconfigTSLoader,
+         }
+      };
+   }
 
    /**
     * Returns the configured input plugin for `rollup-plugin-terser`
@@ -90,6 +119,9 @@ class PluginLoader
     */
    static onPluginLoad(ev)
    {
+      ev.eventbus.on(
+       'typhonjs:oclif:system:file:util:cosmic:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
+
       ev.eventbus.on('typhonjs:oclif:bundle:plugins:main:input:get', PluginLoader.getInputPlugin, PluginLoader);
    }
 }
