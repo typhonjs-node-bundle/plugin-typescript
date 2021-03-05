@@ -2,7 +2,7 @@ import typescript          from 'typescript';
 
 import typescriptPlugin    from '@rollup/plugin-typescript';
 
-import cosmiconfigTSLoader from '@endemolshinegroup/cosmiconfig-typescript-loader';
+import TypeScriptLoader    from '@endemolshinegroup/cosmiconfig-typescript-loader';
 
 const s_CONFLICT_PACKAGES = ['@rollup/plugin-typescript'];
 const s_PACKAGE_NAME = '@typhonjs-node-rollup/plugin-typescript';
@@ -60,7 +60,7 @@ export default class PluginLoader
             `${moduleName}.config.ts`
          ],
          loaders: {
-            '.ts': cosmiconfigTSLoader,
+            '.ts': TypeScriptLoader.default,
          }
       };
    }
