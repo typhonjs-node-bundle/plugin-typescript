@@ -1,6 +1,6 @@
-const typescript           = require('@rollup/plugin-typescript');
+import typescript          from '@rollup/plugin-typescript';
 
-const cosmiconfigTSLoader  = require('@endemolshinegroup/cosmiconfig-typescript-loader').default;
+import cosmiconfigTSLoader from '@endemolshinegroup/cosmiconfig-typescript-loader';
 
 const s_CONFLICT_PACKAGES = ['@rollup/plugin-typescript'];
 const s_PACKAGE_NAME = '@typhonjs-node-rollup/plugin-typescript';
@@ -18,7 +18,7 @@ const s_DEFAULT_CONFIG = {
  * Handles interfacing with the plugin manager adding event bindings to pass back a configured
  * instance of `@rollup/plugin-typescript`.
  */
-class PluginLoader
+export default class PluginLoader
 {
    /**
     * Returns the any modules that cause a conflict.
@@ -131,5 +131,3 @@ class PluginLoader
       ev.eventbus.on('typhonjs:oclif:bundle:plugins:main:input:get', PluginLoader.getInputPlugin, PluginLoader);
    }
 }
-
-module.exports = PluginLoader;
