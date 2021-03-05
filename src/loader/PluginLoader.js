@@ -1,4 +1,6 @@
-import typescript          from '@rollup/plugin-typescript';
+import typescript          from 'typescript';
+
+import typescriptPlugin    from '@rollup/plugin-typescript';
 
 import cosmiconfigTSLoader from '@endemolshinegroup/cosmiconfig-typescript-loader';
 
@@ -11,7 +13,7 @@ const s_DEFAULT_CONFIG = {
    lib: ["dom", "es6", "es2020"],
    target: "es2020",
    tsconfig: false,
-   typescript: require('typescript')
+   typescript
 };
 
 /**
@@ -79,7 +81,7 @@ export default class PluginLoader
       {
          const config = await PluginLoader._loadConfig(bundleData.cliFlags);
 
-         return typescript(config);
+         return typescriptPlugin(config);
       }
    }
 
