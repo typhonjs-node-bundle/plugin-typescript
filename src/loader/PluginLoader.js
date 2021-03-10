@@ -125,7 +125,7 @@ export default class PluginLoader
     *
     * @ignore
     */
-   static onPluginLoad(ev)
+   static async onPluginLoad(ev)
    {
       ev.eventbus.on(
        'typhonjs:oclif:system:file:util:cosmic:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
