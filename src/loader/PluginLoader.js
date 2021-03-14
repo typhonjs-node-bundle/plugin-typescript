@@ -100,12 +100,12 @@ export default class PluginLoader
          return s_DEFAULT_CONFIG;
       }
 
-      const hasTSConfig = await global.$$eventbus.triggerAsync(
-       'typhonjs:oclif:system:file:util:config:typescript:has', global.$$bundler_origCWD, s_SKIP_DIRS);
+      const hasTSConfig = await globalThis.$$eventbus.triggerAsync(
+       'typhonjs:oclif:system:file:util:config:typescript:has', globalThis.$$bundler_origCWD, s_SKIP_DIRS);
 
       if (hasTSConfig)
       {
-         global.$$eventbus.trigger('log:verbose',
+         globalThis.$$eventbus.trigger('log:verbose',
           `${PluginLoader.packageName}: deferring to local Typescript configuration file(s).`);
 
          return {};
