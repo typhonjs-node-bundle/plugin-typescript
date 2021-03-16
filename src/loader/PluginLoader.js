@@ -25,14 +25,14 @@ export default class PluginLoader
    /**
     * Returns the any modules that cause a conflict.
     *
-    * @returns {string[]}
+    * @returns {string[]} An array of conflicting packages.
     */
    static get conflictPackages() { return s_CONFLICT_PACKAGES; }
 
    /**
     * Returns the `package.json` module name.
     *
-    * @returns {string}
+    * @returns {string} Package name.
     */
    static get packageName() { return s_PACKAGE_NAME; }
 
@@ -44,7 +44,7 @@ export default class PluginLoader
     *
     * @param {string} moduleName - The module name to configure for `.ts` file loading.
     *
-    * @returns {{searchPlaces: string[], loaders: {".ts": function }}}
+    * @returns {{searchPlaces: string[], loaders: {".ts": Function }}} Cosmiconfig additional support.
     */
    static getCosmiconfigSupport(moduleName)
    {
