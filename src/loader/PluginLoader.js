@@ -9,11 +9,14 @@ const s_PACKAGE_NAME = '@typhonjs-node-rollup/plugin-typescript';
 
 const s_SKIP_DIRS = ['deploy', 'dist', 'node_modules'];
 
-const s_DEFAULT_CONFIG = {
-   lib: ["dom", "es6", "es2020"],
-   target: "es2020",
-   tsconfig: false,
-   typescript
+const s_DEFAULT_CONFIG = () =>
+{
+   return {
+      lib: ["dom", "es6", "es2020"],
+      target: "es2020",
+      tsconfig: false,
+      typescript
+   };
 };
 
 /**
@@ -97,7 +100,7 @@ export default class PluginLoader
    {
       if (typeof cliFlags['ignore-local-config'] === 'boolean' && cliFlags['ignore-local-config'])
       {
-         return s_DEFAULT_CONFIG;
+         return s_DEFAULT_CONFIG();
       }
 
       const hasTSConfig = await globalThis.$$eventbus.triggerAsync(
@@ -112,7 +115,7 @@ export default class PluginLoader
       }
       else
       {
-         return s_DEFAULT_CONFIG;
+         return s_DEFAULT_CONFIG();
       }
    }
 
