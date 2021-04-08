@@ -7,7 +7,9 @@ import TypeScriptLoader    from '@endemolshinegroup/cosmiconfig-typescript-loade
 const s_CONFLICT_PACKAGES = ['@rollup/plugin-typescript'];
 const s_PACKAGE_NAME = '@typhonjs-node-rollup/plugin-typescript';
 
-const s_SKIP_DIRS = ['deploy', 'dist', 'node_modules'];
+const s_SKIP_DIRS = new Set(['deploy', 'dist', 'node_modules']);
+
+const s_TSC_CONFIG = new Set(['tsconfig.json', 'jsconfig.json']);
 
 const s_DEFAULT_CONFIG = () =>
 {
@@ -42,8 +44,8 @@ export default class PluginLoader
    /**
     * Provides support for `cosmiconfig` config loading for `.ts` files.
     *
-    * Responds to FileUtil event for openConfig:
-    * 'typhonjs:oclif:system:file:util:cosmic:support:get'
+    * Responds to Cosmiconfig event for loadConfig:
+    * 'typhonjs:util:cosmiconfig:config:support:get'
     *
     * @param {string} moduleName - The module name to configure for `.ts` file loading.
     *
@@ -103,8 +105,11 @@ export default class PluginLoader
          return s_DEFAULT_CONFIG();
       }
 
-      const hasTSConfig = await globalThis.$$eventbus.triggerAsync(
-       'typhonjs:oclif:system:file:util:config:typescript:has', globalThis.$$bundler_origCWD, s_SKIP_DIRS);
+      const hasTSConfig = await globalThis.$$eventbus.triggerAsync('typhonjs:util:file:file:has', {
+         dir: globalThis.$$bundler_origCWD,
+         fileList: s_TSC_CONFIG,
+         skipDir: s_SKIP_DIRS
+      });
 
       if (hasTSConfig)
       {
@@ -130,9 +135,7 @@ export default class PluginLoader
     */
    static async onPluginLoad(ev)
    {
-      ev.eventbus.on(
-       'typhonjs:oclif:system:file:util:cosmic:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
-
+      ev.eventbus.on('typhonjs:util:cosmiconfig:config:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
       ev.eventbus.on('typhonjs:oclif:bundle:plugins:main:input:get', PluginLoader.getInputPlugin, PluginLoader);
    }
 }
