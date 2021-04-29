@@ -45,7 +45,7 @@ export default class PluginLoader
     * Provides support for `cosmiconfig` config loading for `.ts` files.
     *
     * Responds to Cosmiconfig event for loadConfig:
-    * 'typhonjs:util:cosmiconfig:config:support:get'
+    * 'typhonjs:utils:cosmiconfig:config:support:get'
     *
     * @param {string} moduleName - The module name to configure for `.ts` file loading.
     *
@@ -127,15 +127,15 @@ export default class PluginLoader
    /**
     * Wires up PluginLoader on the plugin eventbus.
     *
-    * @param {PluginEvent} ev - The plugin event.
+    * @param {object} ev - PluginEvent - The plugin event.
     *
-    * @see https://www.npmjs.com/package/typhonjs-plugin-manager
+    * @see https://www.npmjs.com/package/@typhonjs-plugin/manager
     *
     * @ignore
     */
    static async onPluginLoad(ev)
    {
-      ev.eventbus.on('typhonjs:util:cosmiconfig:config:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
+      ev.eventbus.on('typhonjs:utils:cosmiconfig:config:support:get', PluginLoader.getCosmiconfigSupport, PluginLoader);
       ev.eventbus.on('typhonjs:oclif:bundle:plugins:main:input:get', PluginLoader.getInputPlugin, PluginLoader);
    }
 }
