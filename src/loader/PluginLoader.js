@@ -5,7 +5,7 @@ import typescriptPlugin    from '@rollup/plugin-typescript';
 import TypeScriptLoader    from '@endemolshinegroup/cosmiconfig-typescript-loader';
 
 const s_CONFLICT_PACKAGES = ['@rollup/plugin-typescript'];
-const s_PACKAGE_NAME = '@typhonjs-node-rollup/plugin-typescript';
+const s_PACKAGE_NAME = '@typhonjs-oclif-rollup/plugin-typescript';
 
 const s_SKIP_DIRS = new Set(['deploy', 'dist', 'node_modules']);
 
@@ -71,7 +71,7 @@ export default class PluginLoader
    }
 
    /**
-    * Returns the configured input plugin for `rollup-plugin-terser`
+    * Returns the configured input plugin for `@rollup/plugin-typescript`
     *
     * @param {object} bundleData - The CLI config
     *
