@@ -105,7 +105,7 @@ export default class PluginLoader
          return s_DEFAULT_CONFIG();
       }
 
-      const hasTSConfig = await globalThis.$$eventbus.triggerAsync('typhonjs:util:file:file:has', {
+      const hasTSConfig = await globalThis.$$eventbus.triggerAsync('typhonjs:utils:file:file:has', {
          dir: globalThis.$$bundler_origCWD,
          fileList: s_TSC_CONFIG,
          skipDir: s_SKIP_DIRS
